@@ -1,15 +1,12 @@
-import Nav from '@/components/Nav'
-import Social from '@/components/Social'
 import Landing from '@/pages/Landing'
-import Image from 'next/image'
 import styles from './globals.css'
+import Contact from '@/pages/Contact'
 
 export default function Home() {
   return (
     <main className="main">
-      <Nav />
-      <Social />
       <Landing />
+      {/* <Contact/> */}
     </main>
   )
 }

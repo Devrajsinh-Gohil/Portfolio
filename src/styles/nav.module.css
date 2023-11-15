@@ -131,12 +131,13 @@
 
 .progbar::-webkit-slider-thumb{
     appearance: none;
-    width:20px;
+    width:11px;
     height: 10px;
     background-color: var(--sw);
     border-radius: 50%;
     box-shadow: -410px 0 0 400px var(--sw);
     opacity: 0.7;
+
 }
 
 .progbar::-webkit-slider-thumb:hover{
