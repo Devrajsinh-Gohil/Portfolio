@@ -1,0 +1,26 @@
+.soc {
+    transform: translate(-50%, -50%);
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: 50%;
+    left: 97vw;
+    z-index: 10;
+    border: var(--sg) solid;
+    height: 30vh;
+    justify-content: space-evenly;
+    padding: 1rem;
+    border-radius: 30px;
+    gap: 1.5rem;
+    background-color: var(--sb);
+    box-shadow: 0 0 10px var(--sg);
+}
+
+.soc a {
+    color: var(--sg);
+}
+
+.soc a:hover {
+    color: #12ded0;
+}
+

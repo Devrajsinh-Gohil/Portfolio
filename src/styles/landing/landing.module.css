@@ -1,0 +1,150 @@
+.dp {
+    object-fit: contain;
+    border-radius: 20px;
+    flex: 0.5;
+    margin-left: 0;
+}
+
+.card {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+}
+
+.front,
+.back {
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    position: relative;
+    background-color: var(--sb);
+    color: var(--sg);
+    border: solid var(--sg) 2px;
+    border-radius: 20px;
+    width: 35vw;
+    height: 35vh;
+    box-shadow: 0 0 10px var(--sg);
+}
+
+.front:hover,
+.back:hover {
+    color: #22bdb3;
+    box-shadow: 0 0 10px #00ffee;
+}
+
+.back span {
+    text-align: justify;
+    width: 80%;
+}
+
+.bio {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.biodata {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    font-size: 1rem;
+    font-weight: 500;
+    gap: 0.5rem;
+}
+
+.player {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.progbar {
+    width: 95%;
+}
+
+.icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: var(--sw);
+    gap: 0.5rem;
+    margin-top: 20px;
+}
+
+.audio {
+    display: none;
+}
+
+.progbar {
+    margin-top: 1rem;
+    appearance: none;
+    outline: none;
+    width: 100%;
+    height: 4px;
+    background-color: #828282;
+    border-radius: 20px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 1);
+    overflow: hidden;
+}
+
+.progbar::-webkit-slider-thumb {
+    appearance: none;
+    width: 11px;
+    height: 10px;
+    background-color: var(--sw);
+    border-radius: 50%;
+    box-shadow: -410px 0 0 400px var(--sw);
+    opacity: 0.7;
+}
+
+.progbar::-webkit-slider-thumb:hover {
+    opacity: 1;
+    background-color: var(--sg);
+    box-shadow: -410px 0 0 400px var(--sg);
+}
+
+.side {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.vid {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    min-height: 100%;
+    min-width: 100%;
+    z-index: -11;
+    filter: blur(5px) grayscale();
+}
+
+.cover {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    min-height: 100%;
+    min-width: 100%;
+    background-color: #021207;
+    z-index: -8;
+    opacity: 0.7;
+}
+
+.if {
+    display: none;
+}
