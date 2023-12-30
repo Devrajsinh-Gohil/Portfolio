@@ -16,6 +16,8 @@ import Tilt from 'react-parallax-tilt'
 import Marquee from 'react-fast-marquee'
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, doc, updateDoc, onSnapshot, increment } from 'firebase/firestore';
+import Link from 'next/link';
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyDhOD1F3C_x5jmKB_djrH7NZ7WOUJPaVc4",
@@ -43,6 +45,7 @@ const Landing = () => {
     const [flipped, setflipped] = useState(false)
     const [isLiked, setIsLiked] = useState(false)
     const [delayLoop, setDelayLoop] = useState(true)
+    const [delayLoop2, setDelayLoop2] = useState(true)
     const [glare, setGlare] = useState(true)
     const flip = useCallback(() => {
         flipped ? setflipped(false) : setflipped(true);
@@ -51,6 +54,8 @@ const Landing = () => {
             setGlare(true);
         }, 1000);
     }, [flipped]);
+
+
 
     useEffect(() => {
         const likesRef = doc(db, 'likes', 'likeCount');
@@ -153,80 +158,153 @@ const Landing = () => {
             setDelayLoop(true);
         }, 1000);
     };
+    const setDelayedLoop2 = () => {
+        setDelayLoop2(false);
+        setTimeout(() => {
+            setDelayLoop2(true);
+        }, 1000);
+    };
 
-    if (!isMobile) {
-        return (
-            <>
-                <div>
-                    <div className={styles.cover}></div>
-                    <audio name="audio" id="audio" src="/song.mp3" controls autoPlay loop className={styles.audio} />
-                    <video autoPlay muted loop className={styles.vid}>
-                        <source src="mov.mp4" type="video/mp4" />
-                    </video>
-                    <div className={styles.card}>
+    // if (!isMobile) {
+    //     return (
+    //         <>
+    //             <div>
+    //                 <div className={styles.cover}></div>
+    //                 <audio name="audio" id="audio" src="/song.mp3" controls autoPlay loop className={styles.audio} />
+    //                 <video autoPlay muted loop className={styles.vid}>
+    //                     <source src="mov.mp4" type="video/mp4" />
+    //                 </video>
+    //                 <div className={styles.card}>
+    //                     <Tilt
+    //                         glareEnable={true}
+    //                         glareMaxOpacity={0.45}
+    //                         glarePosition="all"
+    //                         glareBorderRadius="20px"
+    //                         tiltMaxAngleX="5"
+    //                         tiltMaxAngleY="5"
+    //                     >
+    //                         <ReactCardFlip flipDirection='horizontal' isFlipped={flipped}>
+    //                             <div className={styles.front} onClick={flip}>
+    //                                 <div className={styles.bio}>
+    //                                     <Image src="/dp.jpg" alt="Landing Image" width={250} height={250} className={styles.dp} />
+    //                                     <div className={styles.side}>
+    //                                         <div className={styles.biodata}>
+    //                                             <span>Artist: Devrajsinh Gohil ✌️</span>
+    //                                             <span>Title: Code Maestro</span>
+    //                                             <span>Genre: Tech Symphony</span>
+    //                                             <span>Duration: On Repeat</span>
+    //                                         </div>
 
-                        <ReactCardFlip flipDirection='horizontal' isFlipped={flipped}>
-                            <Tilt
-                                glareEnable={true}
-                                glareMaxOpacity={0.45}
-                                glarePosition="all"
-                                glareBorderRadius="20px"
-                                tiltMaxAngleX="5"
-                                tiltMaxAngleY="5"
-                            >
-                                <div className={styles.front} onClick={flip}>
-                                    <div className={styles.bio}>
-                                        <Image src="/dp.jpg" alt="Landing Image" width={250} height={250} className={styles.dp} />
-                                        <div className={styles.side}>
-                                            <div className={styles.biodata}>
-                                                <span>Artist: Devrajsinh Gohil ✌️</span>
-                                                <span>Title: Code Maestro</span>
-                                                <span>Genre: Tech Symphony</span>
-                                                <span>Duration: On Repeat</span>
-                                            </div>
-
-                                            <div className={styles.player}>
-                                                <input type="range" min={0} max={duration} value={currentTime} onChange={handleTimeUpdate} className={styles.progbar} />
-                                                <div className={styles.icon}>
-                                                    <SkipPreviousIcon fontSize="large" onClick={handleSkipPrevious} />
-                                                    {isPlaying ? (
-                                                        <PauseCircleIcon className={styles.play} onClick={handlePlayPause} fontSize='large' />
-                                                    ) : (
-                                                        <PlayCircleIcon className={styles.play} onClick={handlePlayPause} fontSize='large' />
-                                                    )}
-                                                    <SkipNextIcon fontSize="large" onClick={handleSkipNext} />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Tilt>
-                            < Tilt
-                                glareEnable={true}
-                                glareMaxOpacity={0.45}
-                                glarePosition="all"
-                                glareBorderRadius="20px"
-                                tiltMaxAngleX="5"
-                                tiltMaxAngleY="5"
-                            >
-                                <div className={styles.back} onClick={flip}>
-                                    <span>
-                                        "Welcome to my portfolio website! I'm Devrajsinh Gohil, a passionate Code Maestro and creator of Tech Symphony. With a love for technology and a knack for coding, I strive to create innovative and impactful solutions. Through this website, I invite you to explore my work and get a glimpse into my world of software development. From web applications to mobile apps, I'm dedicated to crafting elegant and efficient solutions that bring ideas to life. Join me on this journey as we dive into the realm of code and creativity. Let's create something amazing together!"
-                                    </span>
-                                </div>
-                            </Tilt>
-                        </ReactCardFlip>
-                    </div>
-                </div>
-            </>
-        );
-    }
-    else {
-        return (
-            <>
+    //                                         <div className={styles.player}>
+    //                                             <input type="range" min={0} max={duration} value={currentTime} onChange={handleTimeUpdate} className={styles.progbar} />
+    //                                             <div className={styles.icon}>
+    //                                                 <SkipPreviousIcon fontSize="large" onClick={handleSkipPrevious} />
+    //                                                 {isPlaying ? (
+    //                                                     <PauseCircleIcon className={styles.play} onClick={handlePlayPause} fontSize='large' />
+    //                                                 ) : (
+    //                                                     <PlayCircleIcon className={styles.play} onClick={handlePlayPause} fontSize='large' />
+    //                                                 )}
+    //                                                 <SkipNextIcon fontSize="large" onClick={handleSkipNext} />
+    //                                             </div>
+    //                                         </div>
+    //                                     </div>
+    //                                 </div>
+    //                             </div>
+    //                             <div className={styles.back} onClick={flip}>
+    //                                 <span>
+    //                                     "Welcome to my portfolio website! I'm Devrajsinh Gohil, a passionate Code Maestro and creator of Tech Symphony. With a love for technology and a knack for coding, I strive to create innovative and impactful solutions. Through this website, I invite you to explore my work and get a glimpse into my world of software development. From web applications to mobile apps, I'm dedicated to crafting elegant and efficient solutions that bring ideas to life. Join me on this journey as we dive into the realm of code and creativity. Let's create something amazing together!"
+    //                                 </span>
+    //                             </div>
+    //                         </ReactCardFlip>
+    //                     </Tilt>
+    //                 </div>
+    //             </div>
+    //         </>
+    //     );
+    // }
+    // else {
+    //     return (
+    //         <>
+    //             <section>
+    //                 <audio name="audio" id="audio" src="/song.mp3" controls autoPlay loop className={styles.audio} />
+    //                 <div className={mob_styles.mob_landing_container}>
+    //                     <div className={mob_styles.mob_header_container}>Header</div>
+    //                     <div className={mob_styles.mob_dp_container}>
+    //                         <Image src="/dp.jpg" alt="Landing Image" width={250} height={250} className={mob_styles.mob_dp} />
+    //                     </div>
+    //                     <div className={mob_styles.mob_player_container}>
+    //                         <div className={mob_styles.player}>
+    //                             <div className={mob_styles.song}>
+    //                                 <div className={mob_styles.song_name}>
+    //                                     <div className={mob_styles.name}>
+    //                                         <Marquee speed={20} delay={1} play={delayLoop} onCycleComplete={() => setDelayedLoop()}>
+    //                                             Blue Bird but is it okay if it's lofi? &nbsp; &nbsp; &nbsp; &nbsp;
+    //                                         </Marquee>
+    //                                     </div>
+    //                                     <div className={mob_styles.artist}>
+    //                                         <Marquee speed={40} delay={1} play={delayLoop2} onCycleComplete={() => setDelayedLoop2()}>
+    //                                             I'm Devrajsinh , and I am not the composer of this song &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
+    //                                         </Marquee>
+    //                                     </div>
+    //                                 </div>
+    //                                 <div className={mob_styles.song_likes}>
+    //                                     <div className={mob_styles.like}>
+    //                                         {isLiked ? (
+    //                                             <FavoriteIcon className={styles.like_icon} onClick={handleLike} style={{ fontSize: '2rem' }} />
+    //                                         ) : (
+    //                                             <FavoriteBorderIcon className={styles.play_icon} onClick={handleLike} style={{ fontSize: '2rem' }} />
+    //                                         )}
+    //                                     </div>
+    //                                     <div className={mob_styles.like_count}>{likes}</div>
+    //                                 </div>
+    //                             </div>
+    //                             <input type="range" min={0} max={duration} value={currentTime} onChange={handleTimeUpdate} className={styles.progbar} />
+    //                             <div className={mob_styles.icon}>
+    //                                 <button className={mob_styles.player_btn}>
+    //                                 <SkipPreviousIcon fontSize="large" onClick={handleSkipPrevious} style={{ fontSize: '3.5rem' }} /></button>
+    //                                <button className={mob_styles.player_btn}> 
+    //                                 {isPlaying ? (
+    //                                     <PauseCircleIcon className={mob_styles.play} onClick={handlePlayPause} fontSize='large' style={{ fontSize: '4.5rem' }} />
+    //                                 ) : (
+    //                                     <PlayCircleIcon className={mob_styles.play} onClick={handlePlayPause} fontSize='large' style={{ fontSize: '4.5rem' }} />
+    //                                 )}
+    //                                 </button>
+    //                                 <button className={mob_styles.player_btn}><SkipNextIcon fontSize="large" onClick={handleSkipNext} style={{ fontSize: '3.5rem' }} /></button>
+    //                             </div>
+    //                         </div>
+    //                     </div>
+    //                 </div>
+    //             </section>
+    //             <section className={mob_styles.mob_bio_section} id='lyrics'>
+    //                 <div className={mob_styles.mob_bio_container}>
+    //                     <div className={mob_styles.mob_bio_header}>
+    //                         <span>
+    //                             <button className={mob_styles.lyrics_btn}><Link href="#lyrics" className={mob_styles.link}>Lyrics</Link></button>
+    //                         </span>
+    //                     </div>
+    //                     <div className={mob_styles.mob_bio_body}>
+    //                         <span>
+    //                             "Welcome to my portfolio website! I'm Devrajsinh Gohil, a passionate Code Maestro and creator of Tech Symphony. With a love for technology and a knack for coding, I strive to create innovative and impactful solutions. Through this website, I invite you to explore my work and get a glimpse into my world of software development. From web applications to mobile apps, I'm dedicated to crafting elegant and efficient solutions that bring ideas to life. Join me on this journey as we dive into the realm of code and creativity. Let's create something amazing together!"
+    //                         </span>
+    //                     </div>
+    //                 </div>
+    //             </section>
+    //         </>
+    //     )
+    // }
+    return (
+        <>
+            <section>
                 <audio name="audio" id="audio" src="/song.mp3" controls autoPlay loop className={styles.audio} />
                 <div className={mob_styles.mob_landing_container}>
-                    <div className={mob_styles.mob_header_container}>Header</div>
+                    <div className={mob_styles.mob_header_container}>
+                        <span className={mob_styles.mob_header_container_1}>
+                            PLAYING FROM
+                        </span>
+                        <span className={mob_styles.mob_header_container_2}>
+                            India
+                        </span>
+                    </div>
                     <div className={mob_styles.mob_dp_container}>
                         <Image src="/dp.jpg" alt="Landing Image" width={250} height={250} className={mob_styles.mob_dp} />
                     </div>
@@ -235,12 +313,14 @@ const Landing = () => {
                             <div className={mob_styles.song}>
                                 <div className={mob_styles.song_name}>
                                     <div className={mob_styles.name}>
-                                        <Marquee speed={30} delay={1} play={delayLoop} onCycleComplete={() => setDelayedLoop()}>
-                                            Blue Bird but is it okay if it's lofi? &nbsp; &nbsp; &nbsp; &nbsp;
+                                        <Marquee speed={20} delay={1} play={delayLoop} onCycleComplete={() => setDelayedLoop()}>
+                                            Blue Bird but is it okay if it&apos;s lofi? &nbsp; &nbsp; &nbsp; &nbsp;
                                         </Marquee>
                                     </div>
                                     <div className={mob_styles.artist}>
-                                        Artist: Kijugo
+                                        <Marquee speed={40} delay={1} play={delayLoop2} onCycleComplete={() => setDelayedLoop2()}>
+                                            I&apos;m Devrajsinh , and I am not the composer of this song &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
+                                        </Marquee>
                                     </div>
                                 </div>
                                 <div className={mob_styles.song_likes}>
@@ -256,33 +336,37 @@ const Landing = () => {
                             </div>
                             <input type="range" min={0} max={duration} value={currentTime} onChange={handleTimeUpdate} className={styles.progbar} />
                             <div className={mob_styles.icon}>
-                                <SkipPreviousIcon fontSize="large" onClick={handleSkipPrevious} style={{ fontSize: '3.5rem' }} />
-                                {isPlaying ? (
-                                    <PauseCircleIcon className={mob_styles.play} onClick={handlePlayPause} fontSize='large' style={{ fontSize: '4.5rem' }} />
-                                ) : (
-                                    <PlayCircleIcon className={mob_styles.play} onClick={handlePlayPause} fontSize='large' style={{ fontSize: '4.5rem' }} />
-                                )}
-                                <SkipNextIcon fontSize="large" onClick={handleSkipNext} style={{ fontSize: '3.5rem' }} />
+                                <button className={mob_styles.player_btn}>
+                                    <SkipPreviousIcon fontSize="large" onClick={handleSkipPrevious} style={{ fontSize: '3.5rem' }} /></button>
+                                <button className={mob_styles.player_btn}>
+                                    {isPlaying ? (
+                                        <PauseCircleIcon className={mob_styles.play} onClick={handlePlayPause} fontSize='large' style={{ fontSize: '4.5rem' }} />
+                                    ) : (
+                                        <PlayCircleIcon className={mob_styles.play} onClick={handlePlayPause} fontSize='large' style={{ fontSize: '4.5rem' }} />
+                                    )}
+                                </button>
+                                <button className={mob_styles.player_btn}><SkipNextIcon fontSize="large" onClick={handleSkipNext} style={{ fontSize: '3.5rem' }} /></button>
                             </div>
                         </div>
                     </div>
                 </div>
-                {/* <div className={styles.mob_bio}>
-
-                    <div className={styles.mob_side}>
-                        <div className={styles.mob_biodata}>
-                            <span>Artist: Devrajsinh Gohil ✌️</span>
-                            <span>Title: Code Maestro</span>
-                            <span>Genre: Tech Symphony</span>
-                            <span>Duration: On Repeat</span>
-                        </div>
-
-
+            </section>
+            <section className={mob_styles.mob_bio_section} id='lyrics'>
+                <div className={mob_styles.mob_bio_container}>
+                    <div className={mob_styles.mob_bio_header}>
+                        <span>
+                            <button className={mob_styles.lyrics_btn}><Link href="#lyrics" className={mob_styles.link}>Lyrics</Link></button>
+                        </span>
                     </div>
-                </div> */}
-            </>
-        )
-    }
+                    <div className={mob_styles.mob_bio_body}>
+                        <span>
+                            Welcome to my portfolio website! I&apos;m Devrajsinh Gohil, a passionate Code Maestro and creator of Tech Symphony. With a love for technology and a knack for coding, I strive to create innovative and impactful solutions. Through this website, I invite you to explore my work and get a glimpse into my world of software development. From web applications to mobile apps, I'm dedicated to crafting elegant and efficient solutions that bring ideas to life. Join me on this journey as we dive into the realm of code and creativity. Let's create something amazing together!
+                        </span>
+                    </div>
+                </div>
+            </section>
+        </>
+    )
 };
 
 export default Landing;

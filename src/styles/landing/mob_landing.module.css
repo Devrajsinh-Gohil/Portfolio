@@ -3,13 +3,17 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    height: 90vh;
+    height: 85vh;
     width: 100vw;
     gap: 0;
 }
 
 .mob_header_container {
+    padding-top: 1rem;
+    font-family: CBook;
+    color: white;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%;
@@ -27,6 +31,7 @@
 .mob_dp {
     width: 85%;
     height: auto;
+    border-radius: 10px;
 }
 
 .mob_player_container {
@@ -60,10 +65,20 @@
 
 .song_name .name {
     font-size: 1.5rem;
-    font-weight: 500;
+    font-family: CBold;
+    font-weight: 800;
+    color: white;
+}
+
+.song_name .artist {
+    font-family: CLight;
+    font-size: 1rem;
+    font-weight: 600;
+    color: rgb(172, 172, 172);
 }
 
 .song_likes {
+    font-family: CLight;
     flex: 0.1;
     display: flex;
     flex-direction: column;
@@ -118,5 +133,62 @@
     box-shadow: -410px 0 0 400px var(--sg);
 }
 
+.player_btn{
+    background-color: transparent;
+    border: none;
+    color: white;
+}
 
-/* loader */
+.mob_bio_section{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.mob_bio_container {
+    color: white;
+    border-radius: 20px  20px 0 0;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    flex: 0.25;
+    width: 85vw;
+    background-color: rgb(247, 58, 58);
+    text-align: left;
+}
+
+.mob_bio_header{
+    font-family: 'CBold';
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+    font-size: 1.5rem;
+    padding: 1rem;
+}
+
+.link{
+    text-decoration: none;
+    color: white;
+}
+
+.lyrics_btn{
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    font-family: 'CBold';
+    cursor: pointer;
+}
+
+.mob_bio_body{
+    font-family: CBook;
+    padding: 1rem;
+    font-size: 2rem;
+    height: 50vh;
+    overflow: scroll;
+}

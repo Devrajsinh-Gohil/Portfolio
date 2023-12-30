@@ -1,15 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@font-face {
+  font-family: 'CBold';
+  src: url('../../public/assets/fonts/CircularStd-Bold.otf') format('truetype');
+}
+
+@font-face {
+  font-family: 'CRegular';
+  src: url('../../public/assets/fonts/CircularStd-Black.otf') format('truetype');
+}
+
+@font-face {
+  font-family: 'CLight';
+  src: url('../../public/assets/fonts/CircularStd-Light.otf') format('truetype');
+}
+
+@font-face {
+  font-family: 'CBook';
+  src: url('../../public/assets/fonts/CircularStd-Book.otf') format('truetype');
+}
+
+@font-face {
+  font-family: 'CMedium';
+  src: url('../../public/assets/fonts/CircularStd-Medium.otf') format('truetype');
+}
 
 :root {
   --sg: #3fa089;
   --sb: #191414;
-  --sw: #fff;
+  --sw: #fff;;
 }
 
 * {
   margin: 0;
   padding: 0;
-  font-family: 'Source Code Pro', monospace;
+  user-select: none;
 }
 
 body {
