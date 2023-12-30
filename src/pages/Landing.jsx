@@ -360,7 +360,7 @@ const Landing = () => {
                     </div>
                     <div className={mob_styles.mob_bio_body}>
                         <span>
-                            Welcome to my portfolio website! I&apos;m Devrajsinh Gohil, a passionate Code Maestro and creator of Tech Symphony. With a love for technology and a knack for coding, I strive to create innovative and impactful solutions. Through this website, I invite you to explore my work and get a glimpse into my world of software development. From web applications to mobile apps, I'm dedicated to crafting elegant and efficient solutions that bring ideas to life. Join me on this journey as we dive into the realm of code and creativity. Let's create something amazing together!
+                            Welcome to my portfolio website! I&apos;m Devrajsinh Gohil, a passionate Code Maestro and creator of Tech Symphony. With a love for technology and a knack for coding, I strive to create innovative and impactful solutions. Through this website, I invite you to explore my work and get a glimpse into my world of software development. From web applications to mobile apps, I&apos;m dedicated to crafting elegant and efficient solutions that bring ideas to life. Join me on this journey as we dive into the realm of code and creativity. Let&apos;s create something amazing together!
                         </span>
                     </div>
                 </div>
