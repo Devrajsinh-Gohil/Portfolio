@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import Image from 'next/image'
 import styles from '../styles/landing/landing.module.css'
 import mob_styles from '../styles/landing/mob_landing.module.css'
@@ -11,6 +11,8 @@ import ShuffleIcon from '@mui/icons-material/Shuffle';
 import RepeatOneIcon from '@mui/icons-material/RepeatOne';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ReactCardFlip from 'react-card-flip'
 import Tilt from 'react-parallax-tilt'
 import Marquee from 'react-fast-marquee'
@@ -36,6 +38,7 @@ const db = getFirestore(app);
 
 
 const Landing = () => {
+    const audioRef = useRef(null);
     const [isMobile, setIsMobile] = useState(true)
     const [likes, setLikes] = useState(0);
     const [hasLiked, setHasLiked] = useState(false);
@@ -137,6 +140,12 @@ const Landing = () => {
             audio.play();
             setIsPlaying(true);
         }
+    };
+
+    const formatTime = (time) => {
+        const minutes = Math.floor(time / 60);
+        const seconds = Math.floor(time % 60);
+        return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     };
 
 
@@ -295,7 +304,7 @@ const Landing = () => {
     return (
         <>
             <section>
-                <audio name="audio" id="audio" src="/song.mp3" controls autoPlay loop className={styles.audio} />
+                <audio ref={audioRef} name="audio" id="audio" src="/song.mp3" controls autoPlay loop className={styles.audio} />
                 <div className={mob_styles.mob_landing_container}>
                     <div className={mob_styles.mob_header_container}>
                         <span className={mob_styles.mob_header_container_1}>
@@ -319,22 +328,23 @@ const Landing = () => {
                                     </div>
                                     <div className={mob_styles.artist}>
                                         <Marquee speed={40} delay={1} play={delayLoop2} onCycleComplete={() => setDelayedLoop2()}>
-                                            I&apos;m Devrajsinh , and I am not the composer of this song &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
+                                        I&apos;m Devrajsinh , and I am not the composer of this song &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
                                         </Marquee>
                                     </div>
                                 </div>
                                 <div className={mob_styles.song_likes}>
                                     <div className={mob_styles.like}>
                                         {isLiked ? (
-                                            <FavoriteIcon className={styles.like_icon} onClick={handleLike} style={{ fontSize: '2rem' }} />
+                                            <CheckCircleIcon className={styles.like_icon} onClick={handleLike} style={{ fontSize: '2rem' }} />
                                         ) : (
-                                            <FavoriteBorderIcon className={styles.play_icon} onClick={handleLike} style={{ fontSize: '2rem' }} />
+                                            <AddCircleOutlineIcon className={styles.play_icon} onClick={handleLike} style={{ fontSize: '2rem' }} />
                                         )}
                                     </div>
                                     <div className={mob_styles.like_count}>{likes}</div>
                                 </div>
                             </div>
                             <input type="range" min={0} max={duration} value={currentTime} onChange={handleTimeUpdate} className={styles.progbar} />
+                            <div className={mob_styles.timer}><span>{formatTime(currentTime)}</span> <span>{formatTime(duration)}</span></div>
                             <div className={mob_styles.icon}>
                                 <button className={mob_styles.player_btn}>
                                     <SkipPreviousIcon fontSize="large" onClick={handleSkipPrevious} style={{ fontSize: '3.5rem' }} /></button>
@@ -360,8 +370,26 @@ const Landing = () => {
                     </div>
                     <div className={mob_styles.mob_bio_body}>
                         <span>
-                            Welcome to my portfolio website! I&apos;m Devrajsinh Gohil, a passionate Code Maestro and creator of Tech Symphony. With a love for technology and a knack for coding, I strive to create innovative and impactful solutions. Through this website, I invite you to explore my work and get a glimpse into my world of software development. From web applications to mobile apps, I&apos;m dedicated to crafting elegant and efficient solutions that bring ideas to life. Join me on this journey as we dive into the realm of code and creativity. Let&apos;s create something amazing together!
+                        &quot;Welcome to my portfolio website! I&apos;m Devrajsinh Gohil, a passionate Code Maestro and creator of Tech Symphony. With a love for technology and a knack for coding, I strive to create innovative and impactful solutions. Through this website, I invite you to explore my work and get a glimpse into my world of software development. From web applications to mobile apps, I&apos;m dedicated to crafting elegant and efficient solutions that bring ideas to life. Join me on this journey as we dive into the realm of code and creativity. Let&apos;s create something amazing together!&quot;
                         </span>
+                    </div>
+                </div>
+            </section>
+            <section className={mob_styles.mob_artist_section} id='artist'>
+                <div className={mob_styles.mob_artist_container}>
+                    <div className={mob_styles.mob_artist_header}>
+                        <span>
+                            <button className={mob_styles.lyrics_btn}><Link href="#artist" className={mob_styles.link}>About the Real Artist</Link></button>
+                        </span>
+                    </div>
+                    <div className={mob_styles.mob_artist_body}>
+                        <div className={mob_styles.mob_artist}>
+                            <span className={mob_styles.mob_artist_name}>Kijugo</span>
+                            <span className={mob_styles.mob_artist_followers}>190K+ followers</span>
+                        </div>
+                        <div className={mob_styles.mob_artist_btn}>
+                            <a href='https://open.spotify.com/artist/7HjVvgY9p57LOIrGyulrVU?si=dRL5qNxjT460ZtXfrOsA2Q'>Follow</a>
+                        </div>
                     </div>
                 </div>
             </section>
