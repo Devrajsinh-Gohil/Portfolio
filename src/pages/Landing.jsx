@@ -328,7 +328,7 @@ const Landing = () => {
                                     </div>
                                     <div className={mob_styles.artist}>
                                         <Marquee speed={40} delay={1} play={delayLoop2} onCycleComplete={() => setDelayedLoop2()}>
-                                        I&apos;m Devrajsinh , and I am not the composer of this song &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
+                                        I&apos;m Devrajsinh, and I am not the composer of this song. But you can give a like to this portfolio by clicking the plus icon according to latest spotify update.... &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
                                         </Marquee>
                                     </div>
                                 </div>
@@ -343,7 +343,7 @@ const Landing = () => {
                                     <div className={mob_styles.like_count}>{likes}</div>
                                 </div>
                             </div>
-                            <input type="range" min={0} max={duration} value={currentTime} onChange={handleTimeUpdate} className={styles.progbar} />
+                            <input type="range" min={0} max={duration} value={currentTime} onChange={handleTimeUpdate} className={mob_styles.progbar} step={0.01}/>
                             <div className={mob_styles.timer}><span>{formatTime(currentTime)}</span> <span>{formatTime(duration)}</span></div>
                             <div className={mob_styles.icon}>
                                 <button className={mob_styles.player_btn}>
