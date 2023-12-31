@@ -15,11 +15,22 @@
     font-family: CBook;
     color: white;
     display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    flex: 0.25;
+}
+
+.header_arrow{
+    transform: scale(2)
+}
+
+.header_text{
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    flex: 0.25;
 }
 
 .mob_dp_container {
@@ -91,12 +102,31 @@
 
 .icon {
     display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    color: var(--sw);
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.disabled{
+    color: rgb(172, 172, 172);
+}
+
+.locked{
+    color: var(--sg);
+}
+
+.player_icon {
+    display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     color: var(--sw);
     gap: 0.5rem;
-    font-size: 3rem;
 }
 
 .audio {

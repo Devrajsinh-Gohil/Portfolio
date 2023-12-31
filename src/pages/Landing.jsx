@@ -9,10 +9,10 @@ import SkipNextIcon from '@mui/icons-material/SkipNext'
 import PauseCircleIcon from '@mui/icons-material/PauseCircle'
 import ShuffleIcon from '@mui/icons-material/Shuffle';
 import RepeatOneIcon from '@mui/icons-material/RepeatOne';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { FaCircleCheck } from "react-icons/fa6";
+import { FiPlusCircle } from "react-icons/fi";
+import { PiCaretDown, PiShuffleBold } from "react-icons/pi";
 import ReactCardFlip from 'react-card-flip'
 import Tilt from 'react-parallax-tilt'
 import Marquee from 'react-fast-marquee'
@@ -50,6 +50,7 @@ const Landing = () => {
     const [delayLoop, setDelayLoop] = useState(true)
     const [delayLoop2, setDelayLoop2] = useState(true)
     const [glare, setGlare] = useState(true)
+    const [isSpinning, setIsSpinning] = useState(false);
     const flip = useCallback(() => {
         flipped ? setflipped(false) : setflipped(true);
         setGlare(false);
@@ -74,6 +75,7 @@ const Landing = () => {
     }, []);
 
     const handleLike = () => {
+        setIsSpinning(true);
         if (!hasLiked) {
             const likesRef = doc(db, 'likes', 'likeCount');
             updateDoc(likesRef, {
@@ -94,6 +96,9 @@ const Landing = () => {
             // Remove the like status from localStorage
             localStorage.removeItem('hasLiked');
         }
+        setTimeout(() => {
+            setIsSpinning(false);
+        }, 200);
     };
 
     const handleResize = () => {
@@ -307,12 +312,16 @@ const Landing = () => {
                 <audio ref={audioRef} name="audio" id="audio" src="/song.mp3" controls autoPlay loop className={styles.audio} />
                 <div className={mob_styles.mob_landing_container}>
                     <div className={mob_styles.mob_header_container}>
-                        <span className={mob_styles.mob_header_container_1}>
-                            PLAYING FROM
-                        </span>
-                        <span className={mob_styles.mob_header_container_2}>
-                            India
-                        </span>
+                        <PiCaretDown className={mob_styles.header_arrow}/>
+                        <div className={mob_styles.header_text}>
+                            <span className={mob_styles.mob_header_container_1}>
+                                PLAYING FROM
+                            </span>
+                            <span className={mob_styles.mob_header_container_2}>
+                                India
+                            </span>
+                        </div>
+                        <MoreVertIcon/>
                     </div>
                     <div className={mob_styles.mob_dp_container}>
                         <Image src="/dp.jpg" alt="Landing Image" width={250} height={250} className={mob_styles.mob_dp} />
@@ -328,34 +337,41 @@ const Landing = () => {
                                     </div>
                                     <div className={mob_styles.artist}>
                                         <Marquee speed={40} delay={1} play={delayLoop2} onCycleComplete={() => setDelayedLoop2()}>
-                                        I&apos;m Devrajsinh, and I am not the composer of this song. But you can give a like to this portfolio by clicking the plus icon according to latest spotify update.... &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
+                                            I&apos;m Devrajsinh, and I am not the composer of this song. But you can give a like to this portfolio by clicking the plus icon according to latest spotify update.... &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
                                         </Marquee>
                                     </div>
                                 </div>
                                 <div className={mob_styles.song_likes}>
                                     <div className={mob_styles.like}>
                                         {isLiked ? (
-                                            <CheckCircleIcon className={styles.like_icon} onClick={handleLike} style={{ fontSize: '2rem' }} />
+                                            <FaCircleCheck className={`${styles.like_icon} ${isSpinning ? 'spin' : ''}`} onClick={handleLike} style={{ fontSize: '1.8rem' }} />
                                         ) : (
-                                            <AddCircleOutlineIcon className={styles.play_icon} onClick={handleLike} style={{ fontSize: '2rem' }} />
+                                            <FiPlusCircle className={styles.play_icon} onClick={handleLike} style={{ fontSize: '1.8rem' }} />
                                         )}
                                     </div>
                                     <div className={mob_styles.like_count}>{likes}</div>
                                 </div>
                             </div>
-                            <input type="range" min={0} max={duration} value={currentTime} onChange={handleTimeUpdate} className={mob_styles.progbar} step={0.01}/>
+                            <input type="range" min={0} max={duration} value={currentTime} onChange={handleTimeUpdate} className={mob_styles.progbar} step={0.01} />
                             <div className={mob_styles.timer}><span>{formatTime(currentTime)}</span> <span>{formatTime(duration)}</span></div>
                             <div className={mob_styles.icon}>
-                                <button className={mob_styles.player_btn}>
-                                    <SkipPreviousIcon fontSize="large" onClick={handleSkipPrevious} style={{ fontSize: '3.5rem' }} /></button>
-                                <button className={mob_styles.player_btn}>
-                                    {isPlaying ? (
-                                        <PauseCircleIcon className={mob_styles.play} onClick={handlePlayPause} fontSize='large' style={{ fontSize: '4.5rem' }} />
-                                    ) : (
-                                        <PlayCircleIcon className={mob_styles.play} onClick={handlePlayPause} fontSize='large' style={{ fontSize: '4.5rem' }} />
-                                    )}
-                                </button>
-                                <button className={mob_styles.player_btn}><SkipNextIcon fontSize="large" onClick={handleSkipNext} style={{ fontSize: '3.5rem' }} /></button>
+                                <ShuffleIcon fontSize="large" style={{ fontSize: '1.8rem' }} className={mob_styles.disabled} />
+                                <div className={mob_styles.player_icon}>
+                                    <button className={mob_styles.player_btn}>
+                                        <SkipPreviousIcon fontSize="large" onClick={handleSkipPrevious} style={{ fontSize: '3.5rem' }} />
+                                    </button>
+                                    <button className={mob_styles.player_btn}>
+                                        {isPlaying ? (
+                                            <PauseCircleIcon className={mob_styles.play} onClick={handlePlayPause} fontSize='large' style={{ fontSize: '4.5rem' }} />
+                                        ) : (
+                                            <PlayCircleIcon className={mob_styles.play} onClick={handlePlayPause} fontSize='large' style={{ fontSize: '4.5rem' }} />
+                                        )}
+                                    </button>
+                                    <button className={mob_styles.player_btn}>
+                                        <SkipNextIcon fontSize="large" onClick={handleSkipNext} style={{ fontSize: '3.5rem' }} />
+                                    </button>
+                                </div>
+                                <RepeatOneIcon fontSize="large" style={{ fontSize: '1.8rem' }} className={mob_styles.locked} />
                             </div>
                         </div>
                     </div>
@@ -370,7 +386,7 @@ const Landing = () => {
                     </div>
                     <div className={mob_styles.mob_bio_body}>
                         <span>
-                        &quot;Welcome to my portfolio website! I&apos;m Devrajsinh Gohil, a passionate Code Maestro and creator of Tech Symphony. With a love for technology and a knack for coding, I strive to create innovative and impactful solutions. Through this website, I invite you to explore my work and get a glimpse into my world of software development. From web applications to mobile apps, I&apos;m dedicated to crafting elegant and efficient solutions that bring ideas to life. Join me on this journey as we dive into the realm of code and creativity. Let&apos;s create something amazing together!&quot;
+                            &quot;Welcome to my portfolio website! I&apos;m Devrajsinh Gohil, a passionate Code Maestro and creator of Tech Symphony. With a love for technology and a knack for coding, I strive to create innovative and impactful solutions. Through this website, I invite you to explore my work and get a glimpse into my world of software development. From web applications to mobile apps, I&apos;m dedicated to crafting elegant and efficient solutions that bring ideas to life. Join me on this journey as we dive into the realm of code and creativity. Let&apos;s create something amazing together!&quot;
                         </span>
                     </div>
                 </div>
@@ -379,7 +395,7 @@ const Landing = () => {
                 <div className={mob_styles.mob_artist_container}>
                     <div className={mob_styles.mob_artist_header}>
                         <span>
-                            <button className={mob_styles.lyrics_btn}><Link href="#artist" className={mob_styles.link}>About the Real Artist</Link></button>
+                            <button className={mob_styles.lyrics_btn}><Link href="#artist" className={mob_styles.link}>Artist of the Music</Link></button>
                         </span>
                     </div>
                     <div className={mob_styles.mob_artist_body}>
