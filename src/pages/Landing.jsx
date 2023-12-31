@@ -3,16 +3,14 @@ import React, { useState, useEffect, useCallback, useRef } from 'react'
 import Image from 'next/image'
 import styles from '../styles/landing/landing.module.css'
 import mob_styles from '../styles/landing/mob_landing.module.css'
-import PlayCircleIcon from '@mui/icons-material/PlayCircle'
-import SkipPreviousIcon from '@mui/icons-material/SkipPrevious'
-import SkipNextIcon from '@mui/icons-material/SkipNext'
-import PauseCircleIcon from '@mui/icons-material/PauseCircle'
-import ShuffleIcon from '@mui/icons-material/Shuffle';
-import RepeatOneIcon from '@mui/icons-material/RepeatOne';
+import { TbDevices2 } from "react-icons/tb";
+import { IoShareSocialOutline } from "react-icons/io5";
+import { HiOutlineQueueList } from "react-icons/hi2";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { FaCircleCheck } from "react-icons/fa6";
 import { FiPlusCircle } from "react-icons/fi";
-import { PiCaretDown, PiShuffleBold } from "react-icons/pi";
+import { PiCaretDown, PiShuffleBold, PiSkipBackFill, PiSkipForwardFill, PiPlayCircleFill, PiPauseCircleFill} from "react-icons/pi";
+import { LuRepeat1 } from "react-icons/lu";
 import ReactCardFlip from 'react-card-flip'
 import Tilt from 'react-parallax-tilt'
 import Marquee from 'react-fast-marquee'
@@ -355,23 +353,23 @@ const Landing = () => {
                             <input type="range" min={0} max={duration} value={currentTime} onChange={handleTimeUpdate} className={mob_styles.progbar} step={0.01} />
                             <div className={mob_styles.timer}><span>{formatTime(currentTime)}</span> <span>{formatTime(duration)}</span></div>
                             <div className={mob_styles.icon}>
-                                <ShuffleIcon fontSize="large" style={{ fontSize: '1.8rem' }} className={mob_styles.disabled} />
+                                <PiShuffleBold style={{ fontSize: '1.8rem' }} className={mob_styles.disabled} />
                                 <div className={mob_styles.player_icon}>
                                     <button className={mob_styles.player_btn}>
-                                        <SkipPreviousIcon fontSize="large" onClick={handleSkipPrevious} style={{ fontSize: '3.5rem' }} />
+                                        <PiSkipBackFill onClick={handleSkipPrevious} style={{ fontSize: '2rem' }} />
                                     </button>
                                     <button className={mob_styles.player_btn}>
                                         {isPlaying ? (
-                                            <PauseCircleIcon className={mob_styles.play} onClick={handlePlayPause} fontSize='large' style={{ fontSize: '4.5rem' }} />
+                                            <PiPauseCircleFill className={mob_styles.play} onClick={handlePlayPause} fontSize='large' style={{ fontSize: '4.5rem' }} />
                                         ) : (
-                                            <PlayCircleIcon className={mob_styles.play} onClick={handlePlayPause} fontSize='large' style={{ fontSize: '4.5rem' }} />
+                                            <PiPlayCircleFill className={mob_styles.play} onClick={handlePlayPause} fontSize='large' style={{ fontSize: '4.5rem' }} />
                                         )}
                                     </button>
                                     <button className={mob_styles.player_btn}>
-                                        <SkipNextIcon fontSize="large" onClick={handleSkipNext} style={{ fontSize: '3.5rem' }} />
+                                        <PiSkipForwardFill fontSize="large" onClick={handleSkipNext} style={{ fontSize: '2rem' }} />
                                     </button>
                                 </div>
-                                <RepeatOneIcon fontSize="large" style={{ fontSize: '1.8rem' }} className={mob_styles.locked} />
+                                <LuRepeat1 style={{ fontSize: '1.8rem' }} className={mob_styles.locked} />
                             </div>
                         </div>
                     </div>
