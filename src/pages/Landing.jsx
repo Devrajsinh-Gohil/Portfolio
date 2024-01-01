@@ -9,8 +9,9 @@ import { HiOutlineQueueList } from "react-icons/hi2";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { FaCircleCheck } from "react-icons/fa6";
 import { FiPlusCircle } from "react-icons/fi";
-import { PiCaretDown, PiShuffleBold, PiSkipBackFill, PiSkipForwardFill, PiPlayCircleFill, PiPauseCircleFill} from "react-icons/pi";
+import { PiCaretDown, PiShuffleBold, PiSkipBackFill, PiSkipForwardFill, PiPlayCircleFill, PiPauseCircleFill } from "react-icons/pi";
 import { LuRepeat1 } from "react-icons/lu";
+import { BsThreeDotsVertical } from "react-icons/bs";
 import ReactCardFlip from 'react-card-flip'
 import Tilt from 'react-parallax-tilt'
 import Marquee from 'react-fast-marquee'
@@ -310,7 +311,7 @@ const Landing = () => {
                 <audio ref={audioRef} name="audio" id="audio" src="/song.mp3" controls autoPlay loop className={styles.audio} />
                 <div className={mob_styles.mob_landing_container}>
                     <div className={mob_styles.mob_header_container}>
-                        <PiCaretDown className={mob_styles.header_arrow}/>
+                        <PiCaretDown className={mob_styles.header_arrow} />
                         <div className={mob_styles.header_text}>
                             <span className={mob_styles.mob_header_container_1}>
                                 PLAYING FROM
@@ -319,7 +320,7 @@ const Landing = () => {
                                 India
                             </span>
                         </div>
-                        <MoreVertIcon/>
+                        <BsThreeDotsVertical className={mob_styles.header_menu}/>
                     </div>
                     <div className={mob_styles.mob_dp_container}>
                         <Image src="/dp.jpg" alt="Landing Image" width={250} height={250} className={mob_styles.mob_dp} />
@@ -342,12 +343,12 @@ const Landing = () => {
                                 <div className={mob_styles.song_likes}>
                                     <div className={mob_styles.like}>
                                         {isLiked ? (
-                                            <FaCircleCheck className={`${styles.like_icon} ${isSpinning ? 'spin' : ''}`} onClick={handleLike} style={{ fontSize: '1.8rem' }} />
+                                            <FaCircleCheck className={`${styles.like_icon} ${isSpinning ? 'spin' : ''}`} onClick={handleLike} style={{ fontSize: '2rem' }} />
                                         ) : (
-                                            <FiPlusCircle className={styles.play_icon} onClick={handleLike} style={{ fontSize: '1.8rem' }} />
+                                            <FiPlusCircle className={mob_styles.plus_icon} onClick={handleLike} style={{ fontSize: '2rem'}} />
                                         )}
                                     </div>
-                                    <div className={mob_styles.like_count}>{likes}</div>
+                                    <div className={`${isLiked ?mob_styles.like_count_g:mob_styles.like_count_w}`}>{likes}</div>
                                 </div>
                             </div>
                             <input type="range" min={0} max={duration} value={currentTime} onChange={handleTimeUpdate} className={mob_styles.progbar} step={0.01} />
@@ -370,6 +371,15 @@ const Landing = () => {
                                     </button>
                                 </div>
                                 <LuRepeat1 style={{ fontSize: '1.8rem' }} className={mob_styles.locked} />
+                            </div>
+                            <div className={mob_styles.icons_extra}>
+                                <span>
+                                    <TbDevices2 style={{ fontSize: '1.35rem' }} />
+                                </span>
+                                <span className={mob_styles.icons_extra_grp}>
+                                    <IoShareSocialOutline style={{ fontSize: '1.35rem' }} />
+                                    <HiOutlineQueueList style={{ fontSize: '1.35rem' }} />
+                                </span>
                             </div>
                         </div>
                     </div>
