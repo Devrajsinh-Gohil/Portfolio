@@ -18,6 +18,7 @@ import Marquee from 'react-fast-marquee'
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, doc, updateDoc, onSnapshot, increment } from 'firebase/firestore';
 import Link from 'next/link';
+import Loading from '@/app/loading'
 
 
 const firebaseConfig = {
@@ -50,15 +51,7 @@ const Landing = () => {
     const [delayLoop2, setDelayLoop2] = useState(true)
     const [glare, setGlare] = useState(true)
     const [isSpinning, setIsSpinning] = useState(false);
-    const flip = useCallback(() => {
-        flipped ? setflipped(false) : setflipped(true);
-        setGlare(false);
-        setTimeout(() => {
-            setGlare(true);
-        }, 1000);
-    }, [flipped]);
-
-
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const likesRef = doc(db, 'likes', 'likeCount');
@@ -122,17 +115,19 @@ const Landing = () => {
     })
 
     useEffect(() => {
-        const audio = document.getElementById('audio');
-        audio.addEventListener('timeupdate', () => {
-            setCurrentTime(audio.currentTime);
-            setDuration(audio.duration);
-        });
+        if (audioRef.current) {
+            audioRef.current.addEventListener('timeupdate', () => {
+                setCurrentTime(audioRef.current.currentTime);
+                setDuration(audioRef.current.duration);
+            });
+        }
     }, []);
 
     const handleTimeUpdate = (e) => {
-        const audio = document.getElementById('audio');
-        audio.currentTime = e.target.value;
-        setCurrentTime(audio.currentTime);
+        if (audioRef.current) {
+            audioRef.current.currentTime = e.target.value;
+            setCurrentTime(audioRef.current.currentTime);
+        }
     };
 
     const handlePlayPause = () => {
@@ -178,133 +173,18 @@ const Landing = () => {
         }, 1000);
     };
 
-    // if (!isMobile) {
-    //     return (
-    //         <>
-    //             <div>
-    //                 <div className={styles.cover}></div>
-    //                 <audio name="audio" id="audio" src="/song.mp3" controls autoPlay loop className={styles.audio} />
-    //                 <video autoPlay muted loop className={styles.vid}>
-    //                     <source src="mov.mp4" type="video/mp4" />
-    //                 </video>
-    //                 <div className={styles.card}>
-    //                     <Tilt
-    //                         glareEnable={true}
-    //                         glareMaxOpacity={0.45}
-    //                         glarePosition="all"
-    //                         glareBorderRadius="20px"
-    //                         tiltMaxAngleX="5"
-    //                         tiltMaxAngleY="5"
-    //                     >
-    //                         <ReactCardFlip flipDirection='horizontal' isFlipped={flipped}>
-    //                             <div className={styles.front} onClick={flip}>
-    //                                 <div className={styles.bio}>
-    //                                     <Image src="/dp.jpg" alt="Landing Image" width={250} height={250} className={styles.dp} />
-    //                                     <div className={styles.side}>
-    //                                         <div className={styles.biodata}>
-    //                                             <span>Artist: Devrajsinh Gohil ✌️</span>
-    //                                             <span>Title: Code Maestro</span>
-    //                                             <span>Genre: Tech Symphony</span>
-    //                                             <span>Duration: On Repeat</span>
-    //                                         </div>
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+        }, 2000); // 2000ms delay
 
-    //                                         <div className={styles.player}>
-    //                                             <input type="range" min={0} max={duration} value={currentTime} onChange={handleTimeUpdate} className={styles.progbar} />
-    //                                             <div className={styles.icon}>
-    //                                                 <SkipPreviousIcon fontSize="large" onClick={handleSkipPrevious} />
-    //                                                 {isPlaying ? (
-    //                                                     <PauseCircleIcon className={styles.play} onClick={handlePlayPause} fontSize='large' />
-    //                                                 ) : (
-    //                                                     <PlayCircleIcon className={styles.play} onClick={handlePlayPause} fontSize='large' />
-    //                                                 )}
-    //                                                 <SkipNextIcon fontSize="large" onClick={handleSkipNext} />
-    //                                             </div>
-    //                                         </div>
-    //                                     </div>
-    //                                 </div>
-    //                             </div>
-    //                             <div className={styles.back} onClick={flip}>
-    //                                 <span>
-    //                                     "Welcome to my portfolio website! I'm Devrajsinh Gohil, a passionate Code Maestro and creator of Tech Symphony. With a love for technology and a knack for coding, I strive to create innovative and impactful solutions. Through this website, I invite you to explore my work and get a glimpse into my world of software development. From web applications to mobile apps, I'm dedicated to crafting elegant and efficient solutions that bring ideas to life. Join me on this journey as we dive into the realm of code and creativity. Let's create something amazing together!"
-    //                                 </span>
-    //                             </div>
-    //                         </ReactCardFlip>
-    //                     </Tilt>
-    //                 </div>
-    //             </div>
-    //         </>
-    //     );
-    // }
-    // else {
-    //     return (
-    //         <>
-    //             <section>
-    //                 <audio name="audio" id="audio" src="/song.mp3" controls autoPlay loop className={styles.audio} />
-    //                 <div className={mob_styles.mob_landing_container}>
-    //                     <div className={mob_styles.mob_header_container}>Header</div>
-    //                     <div className={mob_styles.mob_dp_container}>
-    //                         <Image src="/dp.jpg" alt="Landing Image" width={250} height={250} className={mob_styles.mob_dp} />
-    //                     </div>
-    //                     <div className={mob_styles.mob_player_container}>
-    //                         <div className={mob_styles.player}>
-    //                             <div className={mob_styles.song}>
-    //                                 <div className={mob_styles.song_name}>
-    //                                     <div className={mob_styles.name}>
-    //                                         <Marquee speed={20} delay={1} play={delayLoop} onCycleComplete={() => setDelayedLoop()}>
-    //                                             Blue Bird but is it okay if it's lofi? &nbsp; &nbsp; &nbsp; &nbsp;
-    //                                         </Marquee>
-    //                                     </div>
-    //                                     <div className={mob_styles.artist}>
-    //                                         <Marquee speed={40} delay={1} play={delayLoop2} onCycleComplete={() => setDelayedLoop2()}>
-    //                                             I'm Devrajsinh , and I am not the composer of this song &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
-    //                                         </Marquee>
-    //                                     </div>
-    //                                 </div>
-    //                                 <div className={mob_styles.song_likes}>
-    //                                     <div className={mob_styles.like}>
-    //                                         {isLiked ? (
-    //                                             <FavoriteIcon className={styles.like_icon} onClick={handleLike} style={{ fontSize: '2rem' }} />
-    //                                         ) : (
-    //                                             <FavoriteBorderIcon className={styles.play_icon} onClick={handleLike} style={{ fontSize: '2rem' }} />
-    //                                         )}
-    //                                     </div>
-    //                                     <div className={mob_styles.like_count}>{likes}</div>
-    //                                 </div>
-    //                             </div>
-    //                             <input type="range" min={0} max={duration} value={currentTime} onChange={handleTimeUpdate} className={styles.progbar} />
-    //                             <div className={mob_styles.icon}>
-    //                                 <button className={mob_styles.player_btn}>
-    //                                 <SkipPreviousIcon fontSize="large" onClick={handleSkipPrevious} style={{ fontSize: '3.5rem' }} /></button>
-    //                                <button className={mob_styles.player_btn}> 
-    //                                 {isPlaying ? (
-    //                                     <PauseCircleIcon className={mob_styles.play} onClick={handlePlayPause} fontSize='large' style={{ fontSize: '4.5rem' }} />
-    //                                 ) : (
-    //                                     <PlayCircleIcon className={mob_styles.play} onClick={handlePlayPause} fontSize='large' style={{ fontSize: '4.5rem' }} />
-    //                                 )}
-    //                                 </button>
-    //                                 <button className={mob_styles.player_btn}><SkipNextIcon fontSize="large" onClick={handleSkipNext} style={{ fontSize: '3.5rem' }} /></button>
-    //                             </div>
-    //                         </div>
-    //                     </div>
-    //                 </div>
-    //             </section>
-    //             <section className={mob_styles.mob_bio_section} id='lyrics'>
-    //                 <div className={mob_styles.mob_bio_container}>
-    //                     <div className={mob_styles.mob_bio_header}>
-    //                         <span>
-    //                             <button className={mob_styles.lyrics_btn}><Link href="#lyrics" className={mob_styles.link}>Lyrics</Link></button>
-    //                         </span>
-    //                     </div>
-    //                     <div className={mob_styles.mob_bio_body}>
-    //                         <span>
-    //                             "Welcome to my portfolio website! I'm Devrajsinh Gohil, a passionate Code Maestro and creator of Tech Symphony. With a love for technology and a knack for coding, I strive to create innovative and impactful solutions. Through this website, I invite you to explore my work and get a glimpse into my world of software development. From web applications to mobile apps, I'm dedicated to crafting elegant and efficient solutions that bring ideas to life. Join me on this journey as we dive into the realm of code and creativity. Let's create something amazing together!"
-    //                         </span>
-    //                     </div>
-    //                 </div>
-    //             </section>
-    //         </>
-    //     )
-    // }
+        return () => clearTimeout(timer); // Clean up on component unmount
+    }, []);
+
+    if (isLoading) {
+        return <Loading />;
+    }
+
     return (
         <>
             <section>
@@ -320,7 +200,7 @@ const Landing = () => {
                                 India
                             </span>
                         </div>
-                        <BsThreeDotsVertical className={mob_styles.header_menu}/>
+                        <BsThreeDotsVertical className={mob_styles.header_menu} />
                     </div>
                     <div className={mob_styles.mob_dp_container}>
                         <Image src="/dp.jpg" alt="Landing Image" width={250} height={250} className={mob_styles.mob_dp} />
@@ -335,7 +215,7 @@ const Landing = () => {
                                         </Marquee>
                                     </div>
                                     <div className={mob_styles.artist}>
-                                        <Marquee speed={40} delay={1} play={delayLoop2} onCycleComplete={() => setDelayedLoop2()}>
+                                        <Marquee speed={20} delay={1} play={delayLoop2} onCycleComplete={() => setDelayedLoop2()}>
                                             I&apos;m Devrajsinh, and I am not the composer of this song. But you can give a like to this portfolio by clicking the plus icon according to latest spotify update.... &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
                                         </Marquee>
                                     </div>
@@ -345,10 +225,10 @@ const Landing = () => {
                                         {isLiked ? (
                                             <FaCircleCheck className={`${styles.like_icon} ${isSpinning ? 'spin' : ''}`} onClick={handleLike} style={{ fontSize: '2rem' }} />
                                         ) : (
-                                            <FiPlusCircle className={mob_styles.plus_icon} onClick={handleLike} style={{ fontSize: '2rem'}} />
+                                            <FiPlusCircle className={mob_styles.plus_icon} onClick={handleLike} style={{ fontSize: '2rem' }} />
                                         )}
                                     </div>
-                                    <div className={`${isLiked ?mob_styles.like_count_g:mob_styles.like_count_w}`}>{likes}</div>
+                                    <div className={`${isLiked ? mob_styles.like_count_g : mob_styles.like_count_w}`}>{likes}</div>
                                 </div>
                             </div>
                             <input type="range" min={0} max={duration} value={currentTime} onChange={handleTimeUpdate} className={mob_styles.progbar} step={0.01} />
@@ -394,7 +274,30 @@ const Landing = () => {
                     </div>
                     <div className={mob_styles.mob_bio_body}>
                         <span>
-                            &quot;Welcome to my portfolio website! I&apos;m Devrajsinh Gohil, a passionate Code Maestro and creator of Tech Symphony. With a love for technology and a knack for coding, I strive to create innovative and impactful solutions. Through this website, I invite you to explore my work and get a glimpse into my world of software development. From web applications to mobile apps, I&apos;m dedicated to crafting elegant and efficient solutions that bring ideas to life. Join me on this journey as we dive into the realm of code and creativity. Let&apos;s create something amazing together!&quot;
+                            Welcome to my portfolio, where I code the melody,
+                            Devrajsinh Gohil, the maestro of technology.
+                            In the symphony of bytes, a creator I be,
+                            Crafting solutions with a passion, just wait and see.
+
+                            Tech Symphony, where ideas come alive,
+                            From web apps to mobile, in code, we'll thrive.
+                            Explore my world, where creativity's unfurled,
+                            Join me on this journey, let's create a wonderworld.
+
+                            A love for tech, a knack for the code,
+                            Innovation's my compass, on this path I rode.
+                            Elegant solutions, efficiency in stride,
+                            In the realm of development, I take my pride.
+
+                            This website, a portal to my creation,
+                            A showcase of dreams, a digital sensation.
+                            Dive into the lines, where creativity flows,
+                            A symphony of code, where the magic grows.
+
+                            So, here's my invitation, let's create something divine,
+                            In the realm of code and creativity, together we'll shine.
+                            Welcome to my world, where innovation's the key,
+                            Devrajsinh Gohil, the Code Maestro, in Tech Symphony.
                         </span>
                     </div>
                 </div>
@@ -412,7 +315,7 @@ const Landing = () => {
                             <span className={mob_styles.mob_artist_followers}>190K+ followers</span>
                         </div>
                         <div className={mob_styles.mob_artist_btn}>
-                            <a href='https://open.spotify.com/artist/7HjVvgY9p57LOIrGyulrVU?si=dRL5qNxjT460ZtXfrOsA2Q'>Follow</a>
+                            <a href='https://open.spotify.com/artist/7HjVvgY9p57LOIrGyulrVU' target='_blank'>Follow</a>
                         </div>
                     </div>
                 </div>
