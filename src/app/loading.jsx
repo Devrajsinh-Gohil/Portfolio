@@ -1,7 +1,12 @@
-import React from 'react'
+'use client'
 
-export default function Loading () {
+import React from 'react'
+import { FingerprintSpinner } from 'react-epic-spinners'
+
+export default function Loading() {
   return (
-    <div>Loading</div>
+    <div className='loadspin'>
+      <FingerprintSpinner color = '#00ff00'/>
+    </div>
   )
 }

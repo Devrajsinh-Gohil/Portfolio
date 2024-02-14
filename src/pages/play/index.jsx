@@ -1,6 +1,8 @@
 "use client"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from '@/styles/play.module.css';
+
+
 
 function Square({ value, onSquareClick }) {
     return (
@@ -9,25 +11,31 @@ function Square({ value, onSquareClick }) {
         </button>
     );
 }
+
 let count = 0;
 export default function Board() {
+    const [playerSymbol, setPlayerSymbol] = useState("X");
     const [xIsNext, setXIsNext] = useState(true);
     const [squares, setSquares] = useState(Array(9).fill(null));
     
+    useEffect(() => {
+        if (!xIsNext && count > 0) {
+            const bestMove = getBestMove(squares, playerSymbol);
+            handleClick(bestMove);
+        }
+    }, [xIsNext]);
+
     function handleClick(i) {
         if (squares[i] || calculateWinner(squares)) {
             return;
         }
         const nextSquares = squares.slice();
-        if (xIsNext) {
-            nextSquares[i] = "X";
-        } else {
-            nextSquares[i] = "O";
-        }
+        nextSquares[i] = xIsNext ? playerSymbol : getOpponentSymbol(playerSymbol);
         setSquares(nextSquares);
         setXIsNext(!xIsNext);
         count++;
     }
+    
     const winner = calculateWinner(squares);
     let status;
     if(winner === -1) {
@@ -37,12 +45,29 @@ export default function Board() {
     else if (winner) {
         status = "Winner: " + winner;
     } else {
-        status = "Player turn: " + (xIsNext ? "X" : "O");
+        status = "Player turn: " + (xIsNext ? playerSymbol : getOpponentSymbol(playerSymbol));
     }
 
+    function handleSymbolChange(e) {
+        setPlayerSymbol(e.target.value);
+    }
+
+    function handleReset() {
+        setSquares(Array(9).fill(null));
+        setXIsNext(true);
+    }
 
     return (
         <>
+            <div>
+                <label>
+                    Select your symbol:
+                    <select value={playerSymbol} onChange={handleSymbolChange}>
+                        <option value="X">X</option>
+                        <option value="O">O</option>
+                    </select>
+                </label>
+            </div>
             <div className={styles.status}>{status}</div>
             <div className={styles.board_row}>
                 <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
@@ -59,7 +84,7 @@ export default function Board() {
                 <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
                 <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
             </div>
-            <button onClick={() => {setSquares(Array(9).fill(null)); count = 0;}}>reset</button>
+            <button onClick={handleReset}>reset</button>
         </>
     );
 }
@@ -85,4 +110,64 @@ function calculateWinner(squares) {
         }
     }
     return null;
+}
+
+function getBestMove(board, playerSymbol) {
+    let bestScore = -Infinity;
+    let bestMove;
+    count = 0;
+    for (let i = 0; i < board.length; i++) {
+        if (board[i] === null) {
+            board[i] = getOpponentSymbol(playerSymbol);
+            let score = minimax(board, 0, false);
+            board[i] = null;
+            if (score > bestScore) {
+                bestScore = score;
+                bestMove = i;
+            }
+        }
+    }
+
+    return bestMove;
+}
+
+const scores = {
+    X: -1,
+    O: 1,
+    tie: 0
+};
+
+function minimax(board, depth, isMaximizingPlayer) {
+    let result = calculateWinner(board);
+    if (result !== null) {
+        return scores[result];
+    }
+
+    if (isMaximizingPlayer) {
+        let bestScore = -Infinity;
+        for (let i = 0; i < board.length; i++) {
+            if (board[i] === null) {
+                board[i] = "O";
+                let score = minimax(board, depth + 1, false);
+                board[i] = null;
+                bestScore = Math.max(score, bestScore);
+            }
+        }
+        return bestScore;
+    } else {
+        let bestScore = Infinity;
+        for (let i = 0; i < board.length; i++) {
+            if (board[i] === null) {
+                board[i] = "X";
+                let score = minimax(board, depth + 1, true);
+                board[i] = null;
+                bestScore = Math.min(score, bestScore);
+            }
+        }
+        return bestScore;
+    }
+}
+
+function getOpponentSymbol(playerSymbol) {
+    return playerSymbol === "X" ? "O" : "X";
 }
